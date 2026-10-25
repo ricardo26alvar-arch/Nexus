@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    color: #0b0f17;
+    background-color: #ffffff;
+    overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .dark body {
+    color: #f1f5f9;
+    background-color: #070b12;
+  }
+
+  h1, h2, h3, h4, .font-display {
+    font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+  }
+}
+
+/* Custom 3D orbital ring rotation keyframe */
+@keyframes orbital-spin {
+  0% {
+    transform: rotate(0deg) rotateX(65deg) rotateY(15deg);
+  }
+  100% {
+    transform: rotate(360deg) rotateX(65deg) rotateY(15deg);
+  }
+}
+
+@keyframes portal-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.85;
+    filter: drop-shadow(0 0 14px rgba(16, 185, 129, 0.45)) drop-shadow(0 0 24px rgba(2, 132, 199, 0.35));
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+    filter: drop-shadow(0 0 24px rgba(16, 185, 129, 0.7)) drop-shadow(0 0 38px rgba(2, 132, 199, 0.55));
+  }
+}
+
+@keyframes float-subtle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.animate-orbital-spin {
+  animation: orbital-spin 2.2s linear infinite;
+}
+
+.animate-portal-pulse {
+  animation: portal-pulse 2s ease-in-out infinite;
+}
+
+.animate-float-subtle {
+  animation: float-subtle 3.5s ease-in-out infinite;
+}

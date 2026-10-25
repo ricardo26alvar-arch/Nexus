@@ -1,0 +1,6 @@
+{
+  "name": "NEXORA SMART HOTEL",
+  "description": "Plataforma oficial del NEXORA SMART HOTEL. Una nueva dimensión de hospitalidad urbana 4 estrellas con temática Sci-Fi, sostenibilidad predictiva y asistente virtual Nexu.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
