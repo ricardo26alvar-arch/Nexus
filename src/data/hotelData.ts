@@ -387,6 +387,7 @@ export const VIRTUAL_ASSISTANT_KNOWLEDGE = {
   welcomeSpeechBubble: 'Hola, soy Nexu. ¿Necesitas ayuda?',
   welcomeMessage: '¡Hola! Soy Nexu, tu concierge inteligente y guía turístico en NEXORA SMART HOTEL. Estoy aquí para asistirte con tus reservas, informarte sobre la piscina climatizada, el Restaurante Principal, Portal Bar, o planificar tus visitas a la Ciudad Mitad del Mundo. ¿En qué puedo colaborar contigo hoy?',
   quickTopics: [
+    { id: 'consultar_reserva', label: 'Consultar mi Reserva', question: 'Quiero consultar la información de mi reserva existente' },
     { id: 'piscina', label: 'Piscina y Restaurante', question: '¿La piscina está climatizada y qué ofrece el restaurante principal?' },
     { id: 'habitaciones', label: 'Habitaciones y Precios en $', question: '¿Cuáles son las 5 habitaciones y los precios en dólares ($)?' },
     { id: 'reservar', label: 'Cómo Reservar & Inclusiones', question: '¿Qué incluye la reserva (piscina, desayuno, gym) y cómo obtengo mi llave digital?' },

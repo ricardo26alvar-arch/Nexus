@@ -2,6 +2,71 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      // Suppress Vite HMR WebSocket connection errors in AI Studio iframe environment
+      (function() {
+        window.addEventListener('unhandledrejection', function(e) {
+          if (e && e.reason && (
+            String(e.reason.message || e.reason).includes('WebSocket') ||
+            String(e.reason.message || e.reason).includes('websocket')
+          )) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+          }
+        });
+
+        const _err = console.error;
+        console.error = function() {
+          const text = Array.from(arguments).map(function(a) { return String(a && a.message ? a.message : a); }).join(' ');
+          if (text.includes('websocket') || text.includes('WebSocket')) return;
+          _err.apply(console, arguments);
+        };
+
+        const NativeWebSocket = window.WebSocket;
+        if (NativeWebSocket) {
+          function MockViteWebSocket(url, protocols) {
+            if (typeof url === 'string' && (url.includes('@vite') || url.includes('ais-dev') || url.includes('localhost') || url.includes(':3000') || url.startsWith('ws:') || url.startsWith('wss:'))) {
+              var listeners = {};
+              var self = {
+                url: url,
+                readyState: 1,
+                CONNECTING: 0,
+                OPEN: 1,
+                CLOSING: 2,
+                CLOSED: 3,
+                send: function() {},
+                close: function() {},
+                addEventListener: function(event, callback) {
+                  listeners[event] = listeners[event] || [];
+                  listeners[event].push(callback);
+                  if (event === 'open') {
+                    setTimeout(function() {
+                      try {
+                        callback.call(self, new Event('open'));
+                      } catch (_) {}
+                    }, 5);
+                  }
+                },
+                removeEventListener: function(event, callback) {
+                  if (listeners[event]) {
+                    listeners[event] = listeners[event].filter(function(cb) { return cb !== callback; });
+                  }
+                },
+                dispatchEvent: function() { return true; }
+              };
+              return self;
+            }
+            return new NativeWebSocket(url, protocols);
+          }
+          MockViteWebSocket.CONNECTING = 0;
+          MockViteWebSocket.OPEN = 1;
+          MockViteWebSocket.CLOSING = 2;
+          MockViteWebSocket.CLOSED = 3;
+          MockViteWebSocket.prototype = NativeWebSocket.prototype;
+          window.WebSocket = MockViteWebSocket;
+        }
+      })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>NEXORA SMART HOTEL — Una nueva dimensión de hospitalidad</title>
     <meta name="description" content="Plataforma oficial del NEXORA SMART HOTEL. Una nueva dimensión de hospitalidad urbana 4 estrellas con temática Sci-Fi, sostenibilidad predictiva y asistente virtual Nexu." />

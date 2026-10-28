@@ -86,6 +86,22 @@ export const BookingSimulator: React.FC<BookingSimulatorProps> = ({
 
         setConfirmedBooking(newBooking);
         if (onBookingComplete) onBookingComplete(newBooking);
+
+        // Persist reservation to data/bookings.json on the server
+        fetch('/api/bookings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            ...newBooking,
+            roomName: selectedRoom.name,
+            mealPlanName: mealPlan === 'all_inclusive'
+              ? 'Experiencia Gastronómica Completa (All-Inclusive)'
+              : (mealPlan === 'breakfast_included' ? 'Desayuno Buffet Gourmet Incluido' : 'Solo Habitación'),
+            createdAt: new Date().toISOString()
+          })
+        }).catch((err) => {
+          console.warn('Error al guardar reserva en servidor:', err);
+        });
       }
     );
   };

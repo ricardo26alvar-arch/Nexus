@@ -77,6 +77,9 @@ export const NexuAssistant: React.FC<NexuAssistantProps> = ({
     }));
 
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 12000);
+
       const response = await fetch('/api/nexu/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -84,11 +87,14 @@ export const NexuAssistant: React.FC<NexuAssistantProps> = ({
           message: query,
           history: historyPayload,
         }),
+        signal: controller.signal,
       });
+
+      clearTimeout(timeoutId);
 
       if (response.ok) {
         const data = await response.json();
-        if (data.reply) {
+        if (data && data.reply) {
           const elapsed = Date.now() - startTime;
           const remainingDelay = Math.max(0, 1500 - elapsed);
 
@@ -107,8 +113,8 @@ export const NexuAssistant: React.FC<NexuAssistantProps> = ({
           return;
         }
       }
-    } catch (error) {
-      console.warn('API de Nexu no disponible, usando motor contextual local:', error);
+    } catch {
+      // Graceful fallback to rich local knowledge response if offline or timeout
     }
 
     // Fallback if offline or API unreachable
@@ -349,14 +355,14 @@ En NEXORA SMART HOTEL (San Antonio de Pichincha, Mitad del Mundo) nuestro equipo
             : 'bg-white border-slate-200/90 shadow-sky-950/20 text-slate-900'
         }`}>
           
-          {/* Header with Nexu Concierge Distinction */}
+          {/* Header with Nexu Distinction */}
           <div className="px-5 py-3.5 bg-gradient-to-r from-slate-950 via-slate-900 to-sky-950 text-white flex items-center justify-between border-b border-slate-800">
             <div className="flex items-center gap-3">
               <NexuAvatar size="sm" isThinking={isThinking} />
               <div>
                 <div className="flex items-center gap-1.5">
                   <h3 className="text-sm font-bold font-display text-white">
-                    Nexu Concierge
+                    Nexu
                   </h3>
                   <span className="text-[10px] bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 px-1.5 py-0.2 rounded font-mono font-bold">
                     Hotel & Turismo
